@@ -1,13 +1,13 @@
 package me.piepers.super11.application;
 
 import io.vertx.core.AbstractVerticle;
+
 /**
- * The main Verticle that starts other backend verticles that matter. 
+ * Verticle for calling external resources and feeds from sport sites. 
  * 
  * @author Bas Piepers (bas@piepers.me)
  *
  */
-public class MainVerticle extends AbstractVerticle {
+public class FeedVerticle extends AbstractVerticle {
 
-	
 }
