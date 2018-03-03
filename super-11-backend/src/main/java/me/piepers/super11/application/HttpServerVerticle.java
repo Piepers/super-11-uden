@@ -14,11 +14,12 @@ import io.vertx.ext.web.Router;
  * @author Bas Piepers (bas@piepers.me)
  *
  */
-public class HttpVerticle extends AbstractVerticle {
+public class HttpServerVerticle extends AbstractVerticle {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HttpVerticle.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HttpServerVerticle.class);
 	
 	public static final String CONFIG_HTTP_SERVER_PORT = "http.server.port";
+	
 	@Override
 	public void start(Future<Void> startFuture) throws Exception {
 		HttpServer server = vertx.createHttpServer();
