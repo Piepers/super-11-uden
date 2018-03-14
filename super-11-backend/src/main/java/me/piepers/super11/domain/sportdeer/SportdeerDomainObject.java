@@ -1,5 +1,7 @@
 package me.piepers.super11.domain.sportdeer;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +16,9 @@ public abstract class SportdeerDomainObject implements JsonDomainObject {
 	@JsonProperty("_id")
 	private Long id;
 
+	@JsonProperty("pagination")
+	private Pagination pagination;
+
 	@JsonIgnore
 	protected JsonObject docs;
 
@@ -23,6 +28,10 @@ public abstract class SportdeerDomainObject implements JsonDomainObject {
 	}
 
 	public SportdeerDomainObject(JsonObject jsonObject) {
+		Optional<JsonObject> paginationOptional = Optional.ofNullable(jsonObject.getJsonObject("pagination"));
+		if (paginationOptional.isPresent()) {
+			this.pagination = new Pagination(jsonObject.getJsonObject("pagination"));
+		}
 		this.docs = jsonObject.getJsonObject("docs");
 		this.id = this.docs.getLong("_id");
 	}

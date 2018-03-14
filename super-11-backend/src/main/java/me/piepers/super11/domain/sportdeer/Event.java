@@ -55,6 +55,120 @@ public class Event extends SportdeerDomainObject {
 		this.teamSeasonPlayerIdOut = builder.teamSeasonPlayerIdOut;
 	}
 
+	public String getType() {
+		return this.type;
+	}
+
+	public Long getFixtureId() {
+		return this.fixtureId;
+	}
+
+	public Integer getElapsed() {
+		return this.elapsed;
+	}
+
+	public Long getTeamSeasonId() {
+		return this.teamSeasonId;
+	}
+
+	public String getTeamName() {
+		return this.teamName;
+	}
+
+	public Long getTeamSeasonPlayerIdIn() {
+		return this.teamSeasonPlayerIdIn;
+	}
+
+	public Long getTeamSeasonPlayerIdOut() {
+		return this.teamSeasonPlayerIdOut;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (this.elapsed == null ? 0 : this.elapsed.hashCode());
+		result = prime * result + (this.fixtureId == null ? 0 : this.fixtureId.hashCode());
+		result = prime * result + (this.teamName == null ? 0 : this.teamName.hashCode());
+		result = prime * result + (this.teamSeasonId == null ? 0 : this.teamSeasonId.hashCode());
+		result = prime * result + (this.teamSeasonPlayerIdIn == null ? 0 : this.teamSeasonPlayerIdIn.hashCode());
+		result = prime * result + (this.teamSeasonPlayerIdOut == null ? 0 : this.teamSeasonPlayerIdOut.hashCode());
+		result = prime * result + (this.type == null ? 0 : this.type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Event other = (Event) obj;
+		if (this.elapsed == null) {
+			if (other.elapsed != null) {
+				return false;
+			}
+		} else if (!this.elapsed.equals(other.elapsed)) {
+			return false;
+		}
+		if (this.fixtureId == null) {
+			if (other.fixtureId != null) {
+				return false;
+			}
+		} else if (!this.fixtureId.equals(other.fixtureId)) {
+			return false;
+		}
+		if (this.teamName == null) {
+			if (other.teamName != null) {
+				return false;
+			}
+		} else if (!this.teamName.equals(other.teamName)) {
+			return false;
+		}
+		if (this.teamSeasonId == null) {
+			if (other.teamSeasonId != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonId.equals(other.teamSeasonId)) {
+			return false;
+		}
+		if (this.teamSeasonPlayerIdIn == null) {
+			if (other.teamSeasonPlayerIdIn != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonPlayerIdIn.equals(other.teamSeasonPlayerIdIn)) {
+			return false;
+		}
+		if (this.teamSeasonPlayerIdOut == null) {
+			if (other.teamSeasonPlayerIdOut != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonPlayerIdOut.equals(other.teamSeasonPlayerIdOut)) {
+			return false;
+		}
+		if (this.type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!this.type.equals(other.type)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Event [id=" + this.getId() + ", type=" + this.type + ", fixtureId=" + this.fixtureId + ", elapsed="
+				+ this.elapsed + ", teamSeasonId=" + this.teamSeasonId + ", teamName=" + this.teamName
+				+ ", teamSeasonPlayerIdIn=" + this.teamSeasonPlayerIdIn + ", teamSeasonPlayerIdOut="
+				+ this.teamSeasonPlayerIdOut + "]";
+	}
+
 	@JsonPOJOBuilder
 	static class Builder {
 		private final Long id;
