@@ -1,8 +1,5 @@
 package me.piepers.super11.domain.sportdeer;
 
-import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,37 +8,25 @@ import io.vertx.core.json.JsonObject;
 import me.piepers.super11.domain.JsonDomainObject;
 
 @DataObject
+// FIXME: Jackson serializes the id field twice. One with the name "_id" and
+// once with the name "id".
 public abstract class SportdeerDomainObject implements JsonDomainObject {
 
 	@JsonProperty("_id")
-	private Long id;
+	private final Long id;
 
-	@JsonProperty("pagination")
-	private Pagination pagination;
-
-	@JsonIgnore
-	protected JsonObject docs;
-
-	@JsonCreator
+	// @JsonCreator
 	public SportdeerDomainObject(@JsonProperty("_id") Long id) {
 		this.id = id;
 	}
 
 	public SportdeerDomainObject(JsonObject jsonObject) {
-		Optional<JsonObject> paginationOptional = Optional.ofNullable(jsonObject.getJsonObject("pagination"));
-		if (paginationOptional.isPresent()) {
-			this.pagination = new Pagination(jsonObject.getJsonObject("pagination"));
-		}
-		this.docs = jsonObject.getJsonObject("docs");
-		this.id = this.docs.getLong("_id");
+		this.id = jsonObject.getLong("_id");
 	}
 
+	@JsonIgnore
 	public Long getId() {
 		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	@Override

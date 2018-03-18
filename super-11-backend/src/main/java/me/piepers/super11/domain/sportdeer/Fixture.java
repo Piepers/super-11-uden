@@ -1,6 +1,9 @@
 package me.piepers.super11.domain.sportdeer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import io.vertx.codegen.annotations.DataObject;
@@ -13,87 +16,66 @@ import io.vertx.core.json.JsonObject;
  *
  * @author Bas Piepers (bas@piepers.me)
  *
- *         TODO: create structure by clubbing corresponding properties into
- *         classes.
  */
 @DataObject
+@JsonDeserialize(builder = Fixture.Builder.class)
+@JsonPropertyOrder({ "_id" })
 public class Fixture extends SportdeerDomainObject {
-
-	@JsonProperty("id_country")
-	private final Long countryId;
-	@JsonProperty("id_league")
-	private final Long leagueId;
-	@JsonProperty("id_season")
-	private final Long seasonId;
-	@JsonProperty("id_stage")
-	private final Long stageId;
-	@JsonProperty("first_half_ended_at")
-	private final String firstHalfEnd; // Formatted as yyyy-MM-ddTHH:mm:ss.SSSZ
-	@JsonProperty("fixture_status") // TODO: make an enum of this.
-	private final String status;
-	@JsonProperty("fixture_status_short")
-	private final String statusShort;
-	@JsonProperty("game_ended_at")
-	private final String gameEnd;
-	@JsonProperty("game_started_at")
-	private final String gameStart;
-	@JsonProperty("id_referee")
-	private final Long refereeId;
-	@JsonProperty("id_team_season_away")
-	private final Long teamSeasonAwyId;
-	@JsonProperty("id_team_season_home")
-	private final Long teamSeasonHmeId;
+	@JsonUnwrapped
+	private final CountryId countryId;
+	@JsonUnwrapped
+	private final LeagueId leagueId;
+	@JsonUnwrapped
+	private final SeasonId seasonId;
+	@JsonUnwrapped
+	private final StageId stageId;
+	@JsonUnwrapped
+	private final GameTimings gameTimings;
+	@JsonUnwrapped
+	private final FixtureStatus fixtureStatus;
+	@JsonUnwrapped
+	private final Referee referee;
+	@JsonUnwrapped
+	private final TeamSeasonIds teamSeasonIds;
+	@JsonUnwrapped
+	private final TeamSeasonNames teamSeasonNames;
+	@JsonUnwrapped
+	private final Goals goals;
 	@JsonProperty("lineup_confirmed")
 	private final String lineUpConfirmed;
-	@JsonProperty("number_goal_team_away")
-	private final Integer goalsTeamAwy;
-	@JsonProperty("number_goal_team_home")
-	private final Integer goalsTeamHme;
-	@JsonProperty("referee_name")
-	private final String refereeName;
 	@JsonProperty("round")
 	private final Integer round;
 	@JsonProperty("schedule_date")
 	private final String scheduled;
-	@JsonProperty("second_half_ended_at")
-	private final String secondHalfEnd;
-	@JsonProperty("second_half_started_at")
-	private final String secondHalfStart;
 	@JsonProperty("spectators")
 	private final Integer spectators;
 	@JsonProperty("stadium")
 	private final String stadium;
-	@JsonProperty("team_season_away_name")
-	private final String teamSeasonAwy;
-	@JsonProperty("team_season_home_name")
-	private final String teamSeasonHme;
 
+	// FIXME: use ObjectMapper of Jackson to map this if possible.
 	public Fixture(JsonObject jsonObject) {
 		super(jsonObject);
-		this.countryId = this.docs.getLong("id_country");
-		this.leagueId = this.docs.getLong("id_league");
-		this.seasonId = this.docs.getLong("id_season");
-		this.stageId = this.docs.getLong("id_stage");
-		this.firstHalfEnd = this.docs.getString("first_half_ended_at");
-		this.status = this.docs.getString("fixture_status");
-		this.statusShort = this.docs.getString("fixture_status_short");
-		this.gameEnd = this.docs.getString("game_ended_at");
-		this.gameStart = this.docs.getString("game_started_at");
-		this.refereeId = this.docs.getLong("id_referee");
-		this.teamSeasonAwyId = this.docs.getLong("id_team_season_away");
-		this.teamSeasonHmeId = this.docs.getLong("id_team_season_home");
-		this.lineUpConfirmed = this.docs.getString("lineup_confirmed");
-		this.goalsTeamAwy = this.docs.getInteger("number_goal_team_away");
-		this.goalsTeamHme = this.docs.getInteger("number_goal_team_home");
-		this.refereeName = this.docs.getString("referee_name");
-		this.round = this.docs.getInteger("round");
-		this.scheduled = this.docs.getString("schedule_date");
-		this.secondHalfEnd = this.docs.getString("second_half_ended_at");
-		this.secondHalfStart = this.docs.getString("second_half_started_at");
-		this.spectators = this.docs.getInteger("spectators");
-		this.stadium = this.docs.getString("stadium");
-		this.teamSeasonAwy = this.docs.getString("team_season_away_name");
-		this.teamSeasonHme = this.docs.getString("team_season_home_name");
+		this.countryId = CountryId.of(jsonObject.getLong("id_country"));
+		this.leagueId = LeagueId.of(jsonObject.getLong("id_league"));
+		this.seasonId = SeasonId.of(jsonObject.getLong("id_season"));
+		this.stageId = StageId.of(jsonObject.getLong("id_stage"));
+		this.gameTimings = GameTimings.of(jsonObject.getString("game_started_at"),
+				jsonObject.getString("game_ended_at"), jsonObject.getString("first_half_ended_at"),
+				jsonObject.getString("second_half_started_at"), jsonObject.getString("second_half_ended_at"));
+		this.fixtureStatus = FixtureStatus.of(jsonObject.getString("fixture_status"),
+				jsonObject.getString("fixture_status_short"));
+		this.referee = Referee.of(RefereeId.of(jsonObject.getLong("id_referee")), jsonObject.getString("referee_name"));
+		this.teamSeasonIds = TeamSeasonIds.of(jsonObject.getLong("id_team_season_home"),
+				jsonObject.getLong("id_team_season_away"));
+		this.lineUpConfirmed = jsonObject.getString("lineup_confirmed");
+		this.goals = Goals.of(jsonObject.getInteger("number_goal_team_home"),
+				jsonObject.getInteger("number_goal_team_away"));
+		this.round = jsonObject.getInteger("round");
+		this.scheduled = jsonObject.getString("schedule_date");
+		this.spectators = jsonObject.getInteger("spectators");
+		this.stadium = jsonObject.getString("stadium");
+		this.teamSeasonNames = TeamSeasonNames.of(jsonObject.getString("team_season_home_name"),
+				jsonObject.getString("team_season_away_name"));
 	}
 
 	private Fixture(Builder builder) {
@@ -102,90 +84,61 @@ public class Fixture extends SportdeerDomainObject {
 		this.leagueId = builder.leagueId;
 		this.seasonId = builder.seasonId;
 		this.stageId = builder.stageId;
-		this.firstHalfEnd = builder.firstHalfEnd;
-		this.status = builder.status;
-		this.statusShort = builder.statusShort;
-		this.gameEnd = builder.gameEnd;
-		this.gameStart = builder.gameStart;
-		this.refereeId = builder.refereeId;
-		this.teamSeasonAwyId = builder.teamSeasonAwyId;
-		this.teamSeasonHmeId = builder.teamSeasonHmeId;
-		this.lineUpConfirmed = builder.lineUpConfirmed;
-		this.goalsTeamAwy = builder.goalsTeamAwy;
-		this.goalsTeamHme = builder.goalsTeamHme;
-		this.refereeName = builder.refereeName;
+		this.gameTimings = builder.gameTimings;
+		this.fixtureStatus = builder.fixtureStatus;
+		this.referee = builder.referee;
+		this.teamSeasonIds = builder.teamSeasonIds;
+		this.teamSeasonNames = builder.teamSeasonNames;
+		this.goals = builder.goals;
+		this.lineUpConfirmed = builder.lineupConfirmed;
 		this.round = builder.round;
 		this.scheduled = builder.scheduled;
-		this.secondHalfEnd = builder.secondHalfEnd;
-		this.secondHalfStart = builder.secondHalfStart;
 		this.spectators = builder.spectators;
 		this.stadium = builder.stadium;
-		this.teamSeasonAwy = builder.teamSeasonAwy;
-		this.teamSeasonHme = builder.teamSeasonHme;
 	}
 
-	public Long getCountryId() {
+	public CountryId getCountryId() {
 		return this.countryId;
 	}
 
-	public Long getLeagueId() {
+	public LeagueId getLeagueId() {
 		return this.leagueId;
 	}
 
-	public Long getSeasonId() {
+	public SeasonId getSeasonId() {
 		return this.seasonId;
 	}
 
-	public Long getStageId() {
+	public StageId getStageId() {
 		return this.stageId;
 	}
 
-	public String getFirstHalfEnd() {
-		return this.firstHalfEnd;
+	public GameTimings getGameTimings() {
+		return this.gameTimings;
 	}
 
-	public String getStatus() {
-		return this.status;
+	public FixtureStatus getFixtureStatus() {
+		return this.fixtureStatus;
 	}
 
-	public String getStatusShort() {
-		return this.statusShort;
+	public Referee getReferee() {
+		return this.referee;
 	}
 
-	public String getGameEnd() {
-		return this.gameEnd;
+	public TeamSeasonIds getTeamSeasonIds() {
+		return this.teamSeasonIds;
 	}
 
-	public String getGameStart() {
-		return this.gameStart;
+	public TeamSeasonNames getTeamSeasonNames() {
+		return this.teamSeasonNames;
 	}
 
-	public Long getRefereeId() {
-		return this.refereeId;
-	}
-
-	public Long getTeamSeasonAwyId() {
-		return this.teamSeasonAwyId;
-	}
-
-	public Long getTeamSeasonHmeId() {
-		return this.teamSeasonHmeId;
+	public Goals getGoals() {
+		return this.goals;
 	}
 
 	public String getLineUpConfirmed() {
 		return this.lineUpConfirmed;
-	}
-
-	public Integer getGoalsTeamAwy() {
-		return this.goalsTeamAwy;
-	}
-
-	public Integer getGoalsTeamHme() {
-		return this.goalsTeamHme;
-	}
-
-	public String getRefereeName() {
-		return this.refereeName;
 	}
 
 	public Integer getRound() {
@@ -196,14 +149,6 @@ public class Fixture extends SportdeerDomainObject {
 		return this.scheduled;
 	}
 
-	public String getSecondHalfEnd() {
-		return this.secondHalfEnd;
-	}
-
-	public String getSecondHalfStart() {
-		return this.secondHalfStart;
-	}
-
 	public Integer getSpectators() {
 		return this.spectators;
 	}
@@ -212,42 +157,25 @@ public class Fixture extends SportdeerDomainObject {
 		return this.stadium;
 	}
 
-	public String getTeamSeasonAwy() {
-		return this.teamSeasonAwy;
-	}
-
-	public String getTeamSeasonHme() {
-		return this.teamSeasonHme;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (this.countryId == null ? 0 : this.countryId.hashCode());
-		result = prime * result + (this.firstHalfEnd == null ? 0 : this.firstHalfEnd.hashCode());
-		result = prime * result + (this.gameEnd == null ? 0 : this.gameEnd.hashCode());
-		result = prime * result + (this.gameStart == null ? 0 : this.gameStart.hashCode());
-		result = prime * result + (this.goalsTeamAwy == null ? 0 : this.goalsTeamAwy.hashCode());
-		result = prime * result + (this.goalsTeamHme == null ? 0 : this.goalsTeamHme.hashCode());
+		result = prime * result + (this.fixtureStatus == null ? 0 : this.fixtureStatus.hashCode());
+		result = prime * result + (this.gameTimings == null ? 0 : this.gameTimings.hashCode());
+		result = prime * result + (this.goals == null ? 0 : this.goals.hashCode());
 		result = prime * result + (this.leagueId == null ? 0 : this.leagueId.hashCode());
 		result = prime * result + (this.lineUpConfirmed == null ? 0 : this.lineUpConfirmed.hashCode());
-		result = prime * result + (this.refereeId == null ? 0 : this.refereeId.hashCode());
-		result = prime * result + (this.refereeName == null ? 0 : this.refereeName.hashCode());
+		result = prime * result + (this.referee == null ? 0 : this.referee.hashCode());
 		result = prime * result + (this.round == null ? 0 : this.round.hashCode());
 		result = prime * result + (this.scheduled == null ? 0 : this.scheduled.hashCode());
 		result = prime * result + (this.seasonId == null ? 0 : this.seasonId.hashCode());
-		result = prime * result + (this.secondHalfEnd == null ? 0 : this.secondHalfEnd.hashCode());
-		result = prime * result + (this.secondHalfStart == null ? 0 : this.secondHalfStart.hashCode());
 		result = prime * result + (this.spectators == null ? 0 : this.spectators.hashCode());
 		result = prime * result + (this.stadium == null ? 0 : this.stadium.hashCode());
 		result = prime * result + (this.stageId == null ? 0 : this.stageId.hashCode());
-		result = prime * result + (this.status == null ? 0 : this.status.hashCode());
-		result = prime * result + (this.statusShort == null ? 0 : this.statusShort.hashCode());
-		result = prime * result + (this.teamSeasonAwy == null ? 0 : this.teamSeasonAwy.hashCode());
-		result = prime * result + (this.teamSeasonAwyId == null ? 0 : this.teamSeasonAwyId.hashCode());
-		result = prime * result + (this.teamSeasonHme == null ? 0 : this.teamSeasonHme.hashCode());
-		result = prime * result + (this.teamSeasonHmeId == null ? 0 : this.teamSeasonHmeId.hashCode());
+		result = prime * result + (this.teamSeasonIds == null ? 0 : this.teamSeasonIds.hashCode());
+		result = prime * result + (this.teamSeasonNames == null ? 0 : this.teamSeasonNames.hashCode());
 		return result;
 	}
 
@@ -270,39 +198,25 @@ public class Fixture extends SportdeerDomainObject {
 		} else if (!this.countryId.equals(other.countryId)) {
 			return false;
 		}
-		if (this.firstHalfEnd == null) {
-			if (other.firstHalfEnd != null) {
+		if (this.fixtureStatus == null) {
+			if (other.fixtureStatus != null) {
 				return false;
 			}
-		} else if (!this.firstHalfEnd.equals(other.firstHalfEnd)) {
+		} else if (!this.fixtureStatus.equals(other.fixtureStatus)) {
 			return false;
 		}
-		if (this.gameEnd == null) {
-			if (other.gameEnd != null) {
+		if (this.gameTimings == null) {
+			if (other.gameTimings != null) {
 				return false;
 			}
-		} else if (!this.gameEnd.equals(other.gameEnd)) {
+		} else if (!this.gameTimings.equals(other.gameTimings)) {
 			return false;
 		}
-		if (this.gameStart == null) {
-			if (other.gameStart != null) {
+		if (this.goals == null) {
+			if (other.goals != null) {
 				return false;
 			}
-		} else if (!this.gameStart.equals(other.gameStart)) {
-			return false;
-		}
-		if (this.goalsTeamAwy == null) {
-			if (other.goalsTeamAwy != null) {
-				return false;
-			}
-		} else if (!this.goalsTeamAwy.equals(other.goalsTeamAwy)) {
-			return false;
-		}
-		if (this.goalsTeamHme == null) {
-			if (other.goalsTeamHme != null) {
-				return false;
-			}
-		} else if (!this.goalsTeamHme.equals(other.goalsTeamHme)) {
+		} else if (!this.goals.equals(other.goals)) {
 			return false;
 		}
 		if (this.leagueId == null) {
@@ -319,18 +233,11 @@ public class Fixture extends SportdeerDomainObject {
 		} else if (!this.lineUpConfirmed.equals(other.lineUpConfirmed)) {
 			return false;
 		}
-		if (this.refereeId == null) {
-			if (other.refereeId != null) {
+		if (this.referee == null) {
+			if (other.referee != null) {
 				return false;
 			}
-		} else if (!this.refereeId.equals(other.refereeId)) {
-			return false;
-		}
-		if (this.refereeName == null) {
-			if (other.refereeName != null) {
-				return false;
-			}
-		} else if (!this.refereeName.equals(other.refereeName)) {
+		} else if (!this.referee.equals(other.referee)) {
 			return false;
 		}
 		if (this.round == null) {
@@ -354,20 +261,6 @@ public class Fixture extends SportdeerDomainObject {
 		} else if (!this.seasonId.equals(other.seasonId)) {
 			return false;
 		}
-		if (this.secondHalfEnd == null) {
-			if (other.secondHalfEnd != null) {
-				return false;
-			}
-		} else if (!this.secondHalfEnd.equals(other.secondHalfEnd)) {
-			return false;
-		}
-		if (this.secondHalfStart == null) {
-			if (other.secondHalfStart != null) {
-				return false;
-			}
-		} else if (!this.secondHalfStart.equals(other.secondHalfStart)) {
-			return false;
-		}
 		if (this.spectators == null) {
 			if (other.spectators != null) {
 				return false;
@@ -389,46 +282,18 @@ public class Fixture extends SportdeerDomainObject {
 		} else if (!this.stageId.equals(other.stageId)) {
 			return false;
 		}
-		if (this.status == null) {
-			if (other.status != null) {
+		if (this.teamSeasonIds == null) {
+			if (other.teamSeasonIds != null) {
 				return false;
 			}
-		} else if (!this.status.equals(other.status)) {
+		} else if (!this.teamSeasonIds.equals(other.teamSeasonIds)) {
 			return false;
 		}
-		if (this.statusShort == null) {
-			if (other.statusShort != null) {
+		if (this.teamSeasonNames == null) {
+			if (other.teamSeasonNames != null) {
 				return false;
 			}
-		} else if (!this.statusShort.equals(other.statusShort)) {
-			return false;
-		}
-		if (this.teamSeasonAwy == null) {
-			if (other.teamSeasonAwy != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonAwy.equals(other.teamSeasonAwy)) {
-			return false;
-		}
-		if (this.teamSeasonAwyId == null) {
-			if (other.teamSeasonAwyId != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonAwyId.equals(other.teamSeasonAwyId)) {
-			return false;
-		}
-		if (this.teamSeasonHme == null) {
-			if (other.teamSeasonHme != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonHme.equals(other.teamSeasonHme)) {
-			return false;
-		}
-		if (this.teamSeasonHmeId == null) {
-			if (other.teamSeasonHmeId != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonHmeId.equals(other.teamSeasonHmeId)) {
+		} else if (!this.teamSeasonNames.equals(other.teamSeasonNames)) {
 			return false;
 		}
 		return true;
@@ -437,126 +302,104 @@ public class Fixture extends SportdeerDomainObject {
 	@Override
 	public String toString() {
 		return "Fixture [id=" + this.getId() + ", countryId=" + this.countryId + ", leagueId=" + this.leagueId
-				+ ", seasonId=" + this.seasonId + ", stageId=" + this.stageId + ", firstHalfEnd=" + this.firstHalfEnd
-				+ ", status=" + this.status + ", statusShort=" + this.statusShort + ", gameEnd=" + this.gameEnd
-				+ ", gameStart=" + this.gameStart + ", refereeId=" + this.refereeId + ", teamSeasonAwyId="
-				+ this.teamSeasonAwyId + ", teamSeasonHmeId=" + this.teamSeasonHmeId + ", lineUpConfirmed="
-				+ this.lineUpConfirmed + ", goalsTeamAwy=" + this.goalsTeamAwy + ", goalsTeamHme=" + this.goalsTeamHme
-				+ ", refereeName=" + this.refereeName + ", round=" + this.round + ", scheduled=" + this.scheduled
-				+ ", secondHalfEnd=" + this.secondHalfEnd + ", secondHalfStart=" + this.secondHalfStart
-				+ ", spectators=" + this.spectators + ", stadium=" + this.stadium + ", teamSeasonAwy="
-				+ this.teamSeasonAwy + ", teamSeasonHme=" + this.teamSeasonHme + "]";
+				+ ", seasonId=" + this.seasonId + ", stageId=" + this.stageId + ", gameTimings=" + this.gameTimings
+				+ ", fixtureStatus=" + this.fixtureStatus + ", referee=" + this.referee + ", teamSeasonIds="
+				+ this.teamSeasonIds + ", teamSeasonNames=" + this.teamSeasonNames + ", goals=" + this.goals
+				+ ", lineUpConfirmed=" + this.lineUpConfirmed + ", round=" + this.round + ", scheduled="
+				+ this.scheduled + ", spectators=" + this.spectators + ", stadium=" + this.stadium + "]";
 	}
 
-	@JsonPOJOBuilder
-	static class Builder {
+	@JsonPOJOBuilder(withPrefix = "")
+	public static class Builder {
+		// TODO: how to make this generic if there is a Builder as the Creator?
 		private final Long id;
-		private Long countryId;
-		private Long leagueId;
-		private Long seasonId;
-		private Long stageId;
-		private String firstHalfEnd;
-		private String status;
-		private String statusShort;
-		private String gameEnd;
-		private String gameStart;
-		private Long refereeId;
-		private Long teamSeasonAwyId;
-		private Long teamSeasonHmeId;
-		private String lineUpConfirmed;
-		private Integer goalsTeamAwy;
-		private Integer goalsTeamHme;
-		private String refereeName;
+		@JsonUnwrapped
+		private CountryId countryId;
+		@JsonUnwrapped
+		private LeagueId leagueId;
+		@JsonUnwrapped
+		private SeasonId seasonId;
+		@JsonUnwrapped
+		private StageId stageId;
+		@JsonUnwrapped
+		private GameTimings gameTimings;
+		@JsonUnwrapped
+		private FixtureStatus fixtureStatus;
+		@JsonUnwrapped
+		private Referee referee;
+		@JsonUnwrapped
+		private TeamSeasonIds teamSeasonIds;
+		@JsonUnwrapped
+		private TeamSeasonNames teamSeasonNames;
+		@JsonUnwrapped
+		private Goals goals;
+		@JsonProperty("lineup_confirmed")
+		private String lineupConfirmed;
+		@JsonProperty("round")
 		private Integer round;
+		@JsonProperty("schedule_date")
 		private String scheduled;
-		private String secondHalfEnd;
-		private String secondHalfStart;
+		@JsonProperty("spectators")
 		private Integer spectators;
+		@JsonProperty("stadium")
 		private String stadium;
-		private String teamSeasonAwy;
-		private String teamSeasonHme;
 
-		public Builder(Long id) {
+		public Builder(@JsonProperty("_id") Long id) {
 			this.id = id;
 		}
 
-		public Builder countryId(Long countryId) {
+		public Builder countryId(CountryId countryId) {
 			this.countryId = countryId;
 			return this;
 		}
 
-		public Builder leagueId(Long leagueId) {
+		public Builder leagueId(LeagueId leagueId) {
 			this.leagueId = leagueId;
 			return this;
 		}
 
-		public Builder seasonId(Long seasonId) {
+		public Builder seasonId(SeasonId seasonId) {
 			this.seasonId = seasonId;
 			return this;
 		}
 
-		public Builder stageId(Long stageId) {
+		public Builder stageId(StageId stageId) {
 			this.stageId = stageId;
 			return this;
 		}
 
-		public Builder firstHalfEnd(String firstHalfEnd) {
-			this.firstHalfEnd = firstHalfEnd;
+		public Builder gameTimings(GameTimings gameTimings) {
+			this.gameTimings = gameTimings;
 			return this;
 		}
 
-		public Builder status(String status) {
-			this.status = status;
+		public Builder fixtureStatus(FixtureStatus fixtureStatus) {
+			this.fixtureStatus = fixtureStatus;
 			return this;
 		}
 
-		public Builder statusShort(String statusShort) {
-			this.statusShort = statusShort;
+		public Builder referee(Referee referee) {
+			this.referee = referee;
 			return this;
 		}
 
-		public Builder gameEnd(String gameEnd) {
-			this.gameEnd = gameEnd;
+		public Builder teamSeasonIds(TeamSeasonIds teamSeasonIds) {
+			this.teamSeasonIds = teamSeasonIds;
 			return this;
 		}
 
-		public Builder gameStart(String gameStart) {
-			this.gameStart = gameStart;
+		public Builder teamSeasonNames(TeamSeasonNames teamSeasonNames) {
+			this.teamSeasonNames = teamSeasonNames;
 			return this;
 		}
 
-		public Builder refereeId(Long refereeId) {
-			this.refereeId = refereeId;
+		public Builder goals(Goals goals) {
+			this.goals = goals;
 			return this;
 		}
 
-		public Builder teamSeasonAwyId(Long teamSeasonAwyId) {
-			this.teamSeasonAwyId = teamSeasonAwyId;
-			return this;
-		}
-
-		public Builder teamSeasonHmeId(Long teamSeasonHmeId) {
-			this.teamSeasonHmeId = teamSeasonHmeId;
-			return this;
-		}
-
-		public Builder lineUpConfirmed(String lineUpConfirmed) {
-			this.lineUpConfirmed = lineUpConfirmed;
-			return this;
-		}
-
-		public Builder goalsTeamAwy(Integer goalsTeamAwy) {
-			this.goalsTeamAwy = goalsTeamAwy;
-			return this;
-		}
-
-		public Builder goalsTeamHme(Integer goalsTeamHme) {
-			this.goalsTeamHme = goalsTeamHme;
-			return this;
-		}
-
-		public Builder refereeName(String refereeName) {
-			this.refereeName = refereeName;
+		public Builder lineupConfirmed(String lineupConfirmed) {
+			this.lineupConfirmed = lineupConfirmed;
 			return this;
 		}
 
@@ -570,16 +413,6 @@ public class Fixture extends SportdeerDomainObject {
 			return this;
 		}
 
-		public Builder secondHalfEnd(String secondHalfEnd) {
-			this.secondHalfEnd = secondHalfEnd;
-			return this;
-		}
-
-		public Builder secondHalfStart(String secondHalfStart) {
-			this.secondHalfStart = secondHalfStart;
-			return this;
-		}
-
 		public Builder spectators(Integer spectators) {
 			this.spectators = spectators;
 			return this;
@@ -587,16 +420,6 @@ public class Fixture extends SportdeerDomainObject {
 
 		public Builder stadium(String stadium) {
 			this.stadium = stadium;
-			return this;
-		}
-
-		public Builder teamSeasonAwy(String teamSeasonAwy) {
-			this.teamSeasonAwy = teamSeasonAwy;
-			return this;
-		}
-
-		public Builder teamSeasonHme(String teamSeasonHme) {
-			this.teamSeasonHme = teamSeasonHme;
 			return this;
 		}
 

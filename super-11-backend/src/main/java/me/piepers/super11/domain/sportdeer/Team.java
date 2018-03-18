@@ -26,7 +26,7 @@ public class Team extends SportdeerDomainObject {
 
 	public Team(JsonObject jsonObject) {
 		super(jsonObject);
-		this.name = this.docs.getString("name");
+		this.name = jsonObject.getString("name");
 	}
 
 	public String getName() {

@@ -35,13 +35,13 @@ public class Event extends SportdeerDomainObject {
 
 	public Event(JsonObject jsonObject) {
 		super(jsonObject);
-		this.type = this.docs.getString("type");
-		this.fixtureId = this.docs.getLong("id_fixture");
-		this.elapsed = this.docs.getInteger("elapsed");
-		this.teamSeasonId = this.docs.getLong("id_team_season");
-		this.teamName = this.docs.getString("team_name");
-		this.teamSeasonPlayerIdIn = this.docs.getLong("id_team_season_player_in");
-		this.teamSeasonPlayerIdOut = this.docs.getLong("id_team_season_player_out");
+		this.type = jsonObject.getString("type");
+		this.fixtureId = jsonObject.getLong("id_fixture");
+		this.elapsed = jsonObject.getInteger("elapsed");
+		this.teamSeasonId = jsonObject.getLong("id_team_season");
+		this.teamName = jsonObject.getString("team_name");
+		this.teamSeasonPlayerIdIn = jsonObject.getLong("id_team_season_player_in");
+		this.teamSeasonPlayerIdOut = jsonObject.getLong("id_team_season_player_out");
 	}
 
 	private Event(Builder builder) {

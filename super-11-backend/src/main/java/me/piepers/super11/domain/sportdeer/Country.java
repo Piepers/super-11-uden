@@ -27,9 +27,9 @@ public class Country extends SportdeerDomainObject {
 
 	public Country(JsonObject jsonObject) {
 		super(jsonObject);
-		this.name = this.docs.getString("name");
-		this.sFlagLink = this.docs.getString("square_flag");
-		this.rFlagLink = this.docs.getString("rectangle_flag");
+		this.name = jsonObject.getString("name");
+		this.sFlagLink = jsonObject.getString("square_flag");
+		this.rFlagLink = jsonObject.getString("rectangle_flag");
 	}
 
 	@Override

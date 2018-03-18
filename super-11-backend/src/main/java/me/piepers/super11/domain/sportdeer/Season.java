@@ -33,9 +33,9 @@ public class Season extends SportdeerDomainObject {
 
 	public Season(JsonObject jsonObject) {
 		super(jsonObject);
-		this.years = this.docs.getString("years");
-		this.countryId = this.docs.getLong("id_country");
-		this.leagueId = this.docs.getLong("leagueId");
+		this.years = jsonObject.getString("years");
+		this.countryId = jsonObject.getLong("id_country");
+		this.leagueId = jsonObject.getLong("leagueId");
 	}
 
 	public String getYears() {
