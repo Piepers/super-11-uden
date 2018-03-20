@@ -44,7 +44,7 @@ public class Fixture extends SportdeerDomainObject {
 	@JsonProperty("lineup_confirmed")
 	private final String lineUpConfirmed;
 	@JsonProperty("round")
-	private final Integer round;
+	private final String round;
 	@JsonProperty("schedule_date")
 	private final String scheduled;
 	@JsonProperty("spectators")
@@ -70,7 +70,7 @@ public class Fixture extends SportdeerDomainObject {
 		this.lineUpConfirmed = jsonObject.getString("lineup_confirmed");
 		this.goals = Goals.of(jsonObject.getInteger("number_goal_team_home"),
 				jsonObject.getInteger("number_goal_team_away"));
-		this.round = jsonObject.getInteger("round");
+		this.round = jsonObject.getString("round");
 		this.scheduled = jsonObject.getString("schedule_date");
 		this.spectators = jsonObject.getInteger("spectators");
 		this.stadium = jsonObject.getString("stadium");
@@ -141,7 +141,7 @@ public class Fixture extends SportdeerDomainObject {
 		return this.lineUpConfirmed;
 	}
 
-	public Integer getRound() {
+	public String getRound() {
 		return this.round;
 	}
 
@@ -336,7 +336,7 @@ public class Fixture extends SportdeerDomainObject {
 		@JsonProperty("lineup_confirmed")
 		private String lineupConfirmed;
 		@JsonProperty("round")
-		private Integer round;
+		private String round;
 		@JsonProperty("schedule_date")
 		private String scheduled;
 		@JsonProperty("spectators")
@@ -403,7 +403,7 @@ public class Fixture extends SportdeerDomainObject {
 			return this;
 		}
 
-		public Builder round(Integer round) {
+		public Builder round(String round) {
 			this.round = round;
 			return this;
 		}

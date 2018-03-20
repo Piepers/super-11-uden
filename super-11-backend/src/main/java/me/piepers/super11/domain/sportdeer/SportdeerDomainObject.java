@@ -15,7 +15,6 @@ public abstract class SportdeerDomainObject implements JsonDomainObject {
 	@JsonProperty("_id")
 	private final Long id;
 
-	// @JsonCreator
 	public SportdeerDomainObject(@JsonProperty("_id") Long id) {
 		this.id = id;
 	}
