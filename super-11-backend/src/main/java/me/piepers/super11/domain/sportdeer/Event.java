@@ -1,6 +1,8 @@
 package me.piepers.super11.domain.sportdeer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -13,15 +15,16 @@ import io.vertx.core.json.JsonObject;
  * @author Bas Piepers (bas@piepers.me)
  *
  */
-@JsonDeserialize(builder = Event.Builder.class)
 @DataObject
+@JsonDeserialize(builder = Event.Builder.class)
+@JsonPropertyOrder({ "_id"})
 public class Event extends SportdeerDomainObject {
 
 	// TODO: make enum
 	@JsonProperty("type")
 	private final String type; // subst, goal, etc.
-	@JsonProperty("id_fixture")
-	private final Long fixtureId;
+	@JsonUnwrapped
+	private final FixtureId fixtureId;
 	@JsonProperty("elapsed")
 	private final Integer elapsed;
 	@JsonProperty("id_team_season")
@@ -36,7 +39,7 @@ public class Event extends SportdeerDomainObject {
 	public Event(JsonObject jsonObject) {
 		super(jsonObject);
 		this.type = jsonObject.getString("type");
-		this.fixtureId = jsonObject.getLong("id_fixture");
+		this.fixtureId = FixtureId.of(jsonObject.getLong("id_fixture"));
 		this.elapsed = jsonObject.getInteger("elapsed");
 		this.teamSeasonId = jsonObject.getLong("id_team_season");
 		this.teamName = jsonObject.getString("team_name");
@@ -59,7 +62,7 @@ public class Event extends SportdeerDomainObject {
 		return this.type;
 	}
 
-	public Long getFixtureId() {
+	public FixtureId getFixtureId() {
 		return this.fixtureId;
 	}
 
@@ -84,81 +87,34 @@ public class Event extends SportdeerDomainObject {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + (this.elapsed == null ? 0 : this.elapsed.hashCode());
-		result = prime * result + (this.fixtureId == null ? 0 : this.fixtureId.hashCode());
-		result = prime * result + (this.teamName == null ? 0 : this.teamName.hashCode());
-		result = prime * result + (this.teamSeasonId == null ? 0 : this.teamSeasonId.hashCode());
-		result = prime * result + (this.teamSeasonPlayerIdIn == null ? 0 : this.teamSeasonPlayerIdIn.hashCode());
-		result = prime * result + (this.teamSeasonPlayerIdOut == null ? 0 : this.teamSeasonPlayerIdOut.hashCode());
-		result = prime * result + (this.type == null ? 0 : this.type.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+
+		Event event = (Event) o;
+
+		if (!type.equals(event.type)) return false;
+		if (!fixtureId.equals(event.fixtureId)) return false;
+		if (!elapsed.equals(event.elapsed)) return false;
+		if (!teamSeasonId.equals(event.teamSeasonId)) return false;
+		if (!teamName.equals(event.teamName)) return false;
+		if (teamSeasonPlayerIdIn != null ? !teamSeasonPlayerIdIn.equals(event.teamSeasonPlayerIdIn) : event.teamSeasonPlayerIdIn != null)
+			return false;
+		return teamSeasonPlayerIdOut != null ? teamSeasonPlayerIdOut.equals(event.teamSeasonPlayerIdOut) : event.teamSeasonPlayerIdOut == null;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!super.equals(obj)) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		Event other = (Event) obj;
-		if (this.elapsed == null) {
-			if (other.elapsed != null) {
-				return false;
-			}
-		} else if (!this.elapsed.equals(other.elapsed)) {
-			return false;
-		}
-		if (this.fixtureId == null) {
-			if (other.fixtureId != null) {
-				return false;
-			}
-		} else if (!this.fixtureId.equals(other.fixtureId)) {
-			return false;
-		}
-		if (this.teamName == null) {
-			if (other.teamName != null) {
-				return false;
-			}
-		} else if (!this.teamName.equals(other.teamName)) {
-			return false;
-		}
-		if (this.teamSeasonId == null) {
-			if (other.teamSeasonId != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonId.equals(other.teamSeasonId)) {
-			return false;
-		}
-		if (this.teamSeasonPlayerIdIn == null) {
-			if (other.teamSeasonPlayerIdIn != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonPlayerIdIn.equals(other.teamSeasonPlayerIdIn)) {
-			return false;
-		}
-		if (this.teamSeasonPlayerIdOut == null) {
-			if (other.teamSeasonPlayerIdOut != null) {
-				return false;
-			}
-		} else if (!this.teamSeasonPlayerIdOut.equals(other.teamSeasonPlayerIdOut)) {
-			return false;
-		}
-		if (this.type == null) {
-			if (other.type != null) {
-				return false;
-			}
-		} else if (!this.type.equals(other.type)) {
-			return false;
-		}
-		return true;
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + type.hashCode();
+		result = 31 * result + fixtureId.hashCode();
+		result = 31 * result + elapsed.hashCode();
+		result = 31 * result + teamSeasonId.hashCode();
+		result = 31 * result + teamName.hashCode();
+		result = 31 * result + (teamSeasonPlayerIdIn != null ? teamSeasonPlayerIdIn.hashCode() : 0);
+		result = 31 * result + (teamSeasonPlayerIdOut != null ? teamSeasonPlayerIdOut.hashCode() : 0);
+		return result;
 	}
 
 	@Override
@@ -169,18 +125,25 @@ public class Event extends SportdeerDomainObject {
 				+ this.teamSeasonPlayerIdOut + "]";
 	}
 
-	@JsonPOJOBuilder
+	@JsonPOJOBuilder(withPrefix = "")
 	static class Builder {
 		private final Long id;
+		@JsonProperty("type")
 		private String type;
-		private Long fixtureId;
+		@JsonUnwrapped
+		private FixtureId fixtureId;
+		@JsonProperty("elapsed")
 		private Integer elapsed;
+		@JsonProperty("id_team_season")
 		private Long teamSeasonId;
+		@JsonProperty("team_name")
 		private String teamName;
+		@JsonProperty("id_team_season_player_in")
 		private Long teamSeasonPlayerIdIn;
+		@JsonProperty("id_team_season_player_out")
 		private Long teamSeasonPlayerIdOut;
 
-		public Builder(Long id) {
+		public Builder(@JsonProperty("_id") Long id) {
 			this.id = id;
 		}
 
@@ -189,7 +152,7 @@ public class Event extends SportdeerDomainObject {
 			return this;
 		}
 
-		public Builder fixtureId(Long fixtureId) {
+		public Builder fixtureId(FixtureId fixtureId) {
 			this.fixtureId = fixtureId;
 			return this;
 		}
