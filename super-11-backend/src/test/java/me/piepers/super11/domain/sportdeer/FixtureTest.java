@@ -16,24 +16,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 
 @RunWith(JUnit4.class)
 public class FixtureTest {
 
-	private final ObjectMapper objectMapper = new ObjectMapper();
-
 	@Test
 	public void test_example_mapping_document() throws Exception {
 		String exampleResponse = this.createDefaultDocsExampleResponse();
 
-		JavaType type = this.objectMapper.getTypeFactory().constructParametricType(Docs.class, Fixture.class);
-		// We always work with a list of "data" because that's how the API communicates.
-		Docs<Fixture> docs = this.objectMapper.readValue(exampleResponse, type);
+		// We always work with a "docs" object because that's how the API communicates.
+		Docs<Fixture> docs = SportdeerMapper.from(exampleResponse, Fixture.class);
 		assertNotNull(docs);
 		List<Fixture> fixtures = docs.getData();
 		assertThat(fixtures, hasSize(1));
@@ -43,6 +37,39 @@ public class FixtureTest {
 		Fixture fixture = fixtures.get(0);
 		assertNotNull(fixture);
 		this.assertExpectedDefaultFixture(fixture);
+	}
+
+	// Although it's a read only interface, check if serializing back to a Json
+	// string is also working (since that is what's going over the Vertx event bus.
+	@Test
+	public void test_example_mapping_object_to_json() throws Exception {
+		Docs<Fixture> docs = new Docs<>(Arrays.asList(this.createDefaultValidFixture()), null);
+		String json = SportdeerMapper.to(docs);
+		// Expecting the generated json to look like the document we are creating
+		// underneath
+		String expected = this.createExpectedDocsCreatedJsonStringFromDefault();
+		assertThat(json, is(equalTo(expected)));
+	}
+
+	// Test if the object mappping serialization and de-serialization also works as
+	// expected.
+	@Test
+	public void test_data_object_mapping() {
+		Fixture fixture = this.createDefaultValidFixture();
+		JsonObject jsonObject = new JsonObject(Json.encode(fixture));
+		String expected = this.createExpectedFixtureCreatedJsonStringFromDefault();
+		assertThat(expected, is(equalTo(jsonObject.toString())));
+	}
+
+	// Test if an incoming string is mapped as expected. Only the fixture itself
+	// will be mapped, not "docs".
+	@Test
+	public void test_data_mapping_to_object() {
+		String exampleResponse = this.createDefaultExampleResponse();
+		JsonObject jsonObject = new JsonObject(exampleResponse);
+		Fixture fixture = new Fixture(jsonObject);
+		this.assertExpectedDefaultFixture(fixture);
+
 	}
 
 	private void assertExpectedDefaultFixture(Fixture fixture) {
@@ -74,41 +101,6 @@ public class FixtureTest {
 		assertThat(fixture.getTeamSeasonNames(), is(not(nullValue())));
 		assertThat(fixture.getTeamSeasonNames().getTeamSeasonHme(), is("Watford"));
 		assertThat(fixture.getTeamSeasonNames().getTeamSeasonAwy(), is("Chelsea"));
-	}
-
-	// Although it's a read only interface, check if serializing back to a Json
-	// string is also working (since that is what's going over the Vertx event bus.
-	@Test
-	public void test_example_mapping_object_to_json() throws Exception {
-		Docs<Fixture> docs = new Docs<>(Arrays.asList(this.createDefaultValidFixture()), null);
-
-		// this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(docs);
-		String json = this.objectMapper.writeValueAsString(docs);
-		// Expecting the generated json to look like the document we are creating
-		// underneath
-		String expected = this.createExpectedDocsCreatedJsonStringFromDefault();
-		assertThat(json, is(equalTo(expected)));
-	}
-
-	// Test if the object mappping serialization and de-serialization also works as
-	// expected.
-	@Test
-	public void test_data_object_mapping() {
-		Fixture fixture = this.createDefaultValidFixture();
-		JsonObject jsonObject = new JsonObject(Json.encode(fixture));
-		String expected = this.createExpectedFixtureCreatedJsonStringFromDefault();
-		assertThat(expected, is(equalTo(jsonObject.toString())));
-	}
-
-	// Test if an incoming string is mapped as expected. Only the fixture itself
-	// will be mapped, not "docs".
-	@Test
-	public void test_data_mapping_to_object() {
-		String exampleResponse = this.createDefaultExampleResponse();
-		JsonObject jsonObject = new JsonObject(exampleResponse);
-		Fixture fixture = new Fixture(jsonObject);
-		this.assertExpectedDefaultFixture(fixture);
-
 	}
 
 	// An example response as it will arrive from the API (so with the "docs"
