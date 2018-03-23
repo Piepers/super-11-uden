@@ -28,7 +28,9 @@ public final class SportdeerMapper {
 	 * @param json,
 	 *            the String with JSON content.
 	 * @param type,
-	 *            the type of the domain object to which the object must be mapped
+	 *            the type of the domain object to which the object must be mapped.
+	 *            Note: this is the domain object that is listed within the
+	 *            {@link Docs} object, not the Docs class itself.
 	 * @return a {@link Docs} object containing one or more items and optionally a
 	 *         {@link Pagination} object.
 	 * @throws JsonParseException
