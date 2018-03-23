@@ -1,7 +1,9 @@
 package me.piepers.super11.domain.sportdeer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import io.vertx.codegen.annotations.DataObject;
@@ -14,6 +16,8 @@ import io.vertx.core.json.JsonObject;
  * @author Bas Piepers (bas@piepers.me)
  */
 @DataObject
+@JsonDeserialize(builder = Inplay.Builder.class)
+@JsonPropertyOrder({ "_id" })
 public class Inplay extends SportdeerDomainObject {
 
 	@JsonUnwrapped
@@ -155,6 +159,10 @@ public class Inplay extends SportdeerDomainObject {
 
 	public String getFirstHalfEnded() {
 		return this.firstHalfEnded;
+	}
+
+	public String getSecondHalfStarted() {
+		return this.secondHalfStarted;
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")
