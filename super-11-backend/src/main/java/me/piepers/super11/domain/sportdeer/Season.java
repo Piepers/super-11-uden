@@ -7,13 +7,16 @@ import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
 
 /**
- * The Seaon object from the Sportdeer API contains the
+ * The Seaon object from the Sportdeer API contains the name, years, country and
+ * league of the season.
  *
  * @author Bas Piepers (bas@piepers.me)
  *
  */
 @DataObject
 public class Season extends SportdeerDomainObject {
+	@JsonProperty("name")
+	private final String name;
 	// Years have the format yyyy/yyyy (e.g. 2017/2018)
 	@JsonProperty("years")
 	private final String years;
@@ -23,10 +26,11 @@ public class Season extends SportdeerDomainObject {
 	private final Long leagueId;
 
 	@JsonCreator
-	public Season(@JsonProperty("_id") Long id, @JsonProperty("years") String years,
+	public Season(@JsonProperty("_id") Long id, @JsonProperty("years") String years, @JsonProperty("name") String name,
 			@JsonProperty("id_country") Long countryId, @JsonProperty("id_league") Long leagueId) {
 		super(id);
 		this.years = years;
+		this.name = name;
 		this.countryId = countryId;
 		this.leagueId = leagueId;
 	}
@@ -34,6 +38,7 @@ public class Season extends SportdeerDomainObject {
 	public Season(JsonObject jsonObject) {
 		super(jsonObject);
 		this.years = jsonObject.getString("years");
+		this.name = jsonObject.getString("name");
 		this.countryId = jsonObject.getLong("id_country");
 		this.leagueId = jsonObject.getLong("leagueId");
 	}
@@ -50,12 +55,17 @@ public class Season extends SportdeerDomainObject {
 		return this.leagueId;
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (this.countryId == null ? 0 : this.countryId.hashCode());
 		result = prime * result + (this.leagueId == null ? 0 : this.leagueId.hashCode());
+		result = prime * result + (this.name == null ? 0 : this.name.hashCode());
 		result = prime * result + (this.years == null ? 0 : this.years.hashCode());
 		return result;
 	}
@@ -86,6 +96,13 @@ public class Season extends SportdeerDomainObject {
 		} else if (!this.leagueId.equals(other.leagueId)) {
 			return false;
 		}
+		if (this.name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!this.name.equals(other.name)) {
+			return false;
+		}
 		if (this.years == null) {
 			if (other.years != null) {
 				return false;
@@ -98,7 +115,7 @@ public class Season extends SportdeerDomainObject {
 
 	@Override
 	public String toString() {
-		return "Season [id=" + this.getId() + ", years=" + this.years + ", countryId=" + this.countryId + ", leagueId="
-				+ this.leagueId + "]";
+		return "Season [id=" + this.getId() + ", years=" + this.years + ", name=" + this.name + ", countryId="
+				+ this.countryId + ", leagueId=" + this.leagueId + "]";
 	}
 }

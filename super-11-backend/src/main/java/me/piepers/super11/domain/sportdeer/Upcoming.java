@@ -231,6 +231,15 @@ public class Upcoming extends SportdeerDomainObject {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Upcoming [id=" + this.getId() + ", countryId=" + this.countryId + ", leagueId=" + this.leagueId
+				+ ", stageId=" + this.stageId + ", seasonId=" + this.seasonId + ", fixtureStatus=" + this.fixtureStatus
+				+ ", teamSeasonIds=" + this.teamSeasonIds + ", teamSeasonNames=" + this.teamSeasonNames + ", goals="
+				+ this.goals + ", round=" + this.round + ", scheduled=" + this.scheduled + ", stadium=" + this.stadium
+				+ "]";
+	}
+
 	@JsonPOJOBuilder(withPrefix = "")
 	public static class Builder {
 		// TODO: how to make this generic if there is a Builder as the Creator?

@@ -158,49 +158,145 @@ public class Fixture extends SportdeerDomainObject {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
-
-		Fixture fixture = (Fixture) o;
-
-		if (!countryId.equals(fixture.countryId)) return false;
-		if (!leagueId.equals(fixture.leagueId)) return false;
-		if (!seasonId.equals(fixture.seasonId)) return false;
-		if (!stageId.equals(fixture.stageId)) return false;
-		if (!gameTimings.equals(fixture.gameTimings)) return false;
-		if (!fixtureStatus.equals(fixture.fixtureStatus)) return false;
-		if (!referee.equals(fixture.referee)) return false;
-		if (!teamSeasonIds.equals(fixture.teamSeasonIds)) return false;
-		if (!teamSeasonNames.equals(fixture.teamSeasonNames)) return false;
-		if (!goals.equals(fixture.goals)) return false;
-		if (!lineUpConfirmed.equals(fixture.lineUpConfirmed)) return false;
-		if (!round.equals(fixture.round)) return false;
-		if (!scheduled.equals(fixture.scheduled)) return false;
-		if (!spectators.equals(fixture.spectators)) return false;
-		return stadium.equals(fixture.stadium);
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (this.countryId == null ? 0 : this.countryId.hashCode());
+		result = prime * result + (this.fixtureStatus == null ? 0 : this.fixtureStatus.hashCode());
+		result = prime * result + (this.gameTimings == null ? 0 : this.gameTimings.hashCode());
+		result = prime * result + (this.goals == null ? 0 : this.goals.hashCode());
+		result = prime * result + (this.leagueId == null ? 0 : this.leagueId.hashCode());
+		result = prime * result + (this.lineUpConfirmed == null ? 0 : this.lineUpConfirmed.hashCode());
+		result = prime * result + (this.referee == null ? 0 : this.referee.hashCode());
+		result = prime * result + (this.round == null ? 0 : this.round.hashCode());
+		result = prime * result + (this.scheduled == null ? 0 : this.scheduled.hashCode());
+		result = prime * result + (this.seasonId == null ? 0 : this.seasonId.hashCode());
+		result = prime * result + (this.spectators == null ? 0 : this.spectators.hashCode());
+		result = prime * result + (this.stadium == null ? 0 : this.stadium.hashCode());
+		result = prime * result + (this.stageId == null ? 0 : this.stageId.hashCode());
+		result = prime * result + (this.teamSeasonIds == null ? 0 : this.teamSeasonIds.hashCode());
+		result = prime * result + (this.teamSeasonNames == null ? 0 : this.teamSeasonNames.hashCode());
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 31 * result + countryId.hashCode();
-		result = 31 * result + leagueId.hashCode();
-		result = 31 * result + seasonId.hashCode();
-		result = 31 * result + stageId.hashCode();
-		result = 31 * result + gameTimings.hashCode();
-		result = 31 * result + fixtureStatus.hashCode();
-		result = 31 * result + referee.hashCode();
-		result = 31 * result + teamSeasonIds.hashCode();
-		result = 31 * result + teamSeasonNames.hashCode();
-		result = 31 * result + goals.hashCode();
-		result = 31 * result + lineUpConfirmed.hashCode();
-		result = 31 * result + round.hashCode();
-		result = 31 * result + scheduled.hashCode();
-		result = 31 * result + spectators.hashCode();
-		result = 31 * result + stadium.hashCode();
-		return result;
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Fixture other = (Fixture) obj;
+		if (this.countryId == null) {
+			if (other.countryId != null) {
+				return false;
+			}
+		} else if (!this.countryId.equals(other.countryId)) {
+			return false;
+		}
+		if (this.fixtureStatus == null) {
+			if (other.fixtureStatus != null) {
+				return false;
+			}
+		} else if (!this.fixtureStatus.equals(other.fixtureStatus)) {
+			return false;
+		}
+		if (this.gameTimings == null) {
+			if (other.gameTimings != null) {
+				return false;
+			}
+		} else if (!this.gameTimings.equals(other.gameTimings)) {
+			return false;
+		}
+		if (this.goals == null) {
+			if (other.goals != null) {
+				return false;
+			}
+		} else if (!this.goals.equals(other.goals)) {
+			return false;
+		}
+		if (this.leagueId == null) {
+			if (other.leagueId != null) {
+				return false;
+			}
+		} else if (!this.leagueId.equals(other.leagueId)) {
+			return false;
+		}
+		if (this.lineUpConfirmed == null) {
+			if (other.lineUpConfirmed != null) {
+				return false;
+			}
+		} else if (!this.lineUpConfirmed.equals(other.lineUpConfirmed)) {
+			return false;
+		}
+		if (this.referee == null) {
+			if (other.referee != null) {
+				return false;
+			}
+		} else if (!this.referee.equals(other.referee)) {
+			return false;
+		}
+		if (this.round == null) {
+			if (other.round != null) {
+				return false;
+			}
+		} else if (!this.round.equals(other.round)) {
+			return false;
+		}
+		if (this.scheduled == null) {
+			if (other.scheduled != null) {
+				return false;
+			}
+		} else if (!this.scheduled.equals(other.scheduled)) {
+			return false;
+		}
+		if (this.seasonId == null) {
+			if (other.seasonId != null) {
+				return false;
+			}
+		} else if (!this.seasonId.equals(other.seasonId)) {
+			return false;
+		}
+		if (this.spectators == null) {
+			if (other.spectators != null) {
+				return false;
+			}
+		} else if (!this.spectators.equals(other.spectators)) {
+			return false;
+		}
+		if (this.stadium == null) {
+			if (other.stadium != null) {
+				return false;
+			}
+		} else if (!this.stadium.equals(other.stadium)) {
+			return false;
+		}
+		if (this.stageId == null) {
+			if (other.stageId != null) {
+				return false;
+			}
+		} else if (!this.stageId.equals(other.stageId)) {
+			return false;
+		}
+		if (this.teamSeasonIds == null) {
+			if (other.teamSeasonIds != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonIds.equals(other.teamSeasonIds)) {
+			return false;
+		}
+		if (this.teamSeasonNames == null) {
+			if (other.teamSeasonNames != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonNames.equals(other.teamSeasonNames)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

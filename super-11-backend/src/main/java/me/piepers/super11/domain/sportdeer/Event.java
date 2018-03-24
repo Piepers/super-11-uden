@@ -17,7 +17,7 @@ import io.vertx.core.json.JsonObject;
  */
 @DataObject
 @JsonDeserialize(builder = Event.Builder.class)
-@JsonPropertyOrder({ "_id"})
+@JsonPropertyOrder({ "_id" })
 public class Event extends SportdeerDomainObject {
 
 	// TODO: make enum
@@ -87,34 +87,81 @@ public class Event extends SportdeerDomainObject {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
-
-		Event event = (Event) o;
-
-		if (!type.equals(event.type)) return false;
-		if (!fixtureId.equals(event.fixtureId)) return false;
-		if (!elapsed.equals(event.elapsed)) return false;
-		if (!teamSeasonId.equals(event.teamSeasonId)) return false;
-		if (!teamName.equals(event.teamName)) return false;
-		if (teamSeasonPlayerIdIn != null ? !teamSeasonPlayerIdIn.equals(event.teamSeasonPlayerIdIn) : event.teamSeasonPlayerIdIn != null)
-			return false;
-		return teamSeasonPlayerIdOut != null ? teamSeasonPlayerIdOut.equals(event.teamSeasonPlayerIdOut) : event.teamSeasonPlayerIdOut == null;
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (this.elapsed == null ? 0 : this.elapsed.hashCode());
+		result = prime * result + (this.fixtureId == null ? 0 : this.fixtureId.hashCode());
+		result = prime * result + (this.teamName == null ? 0 : this.teamName.hashCode());
+		result = prime * result + (this.teamSeasonId == null ? 0 : this.teamSeasonId.hashCode());
+		result = prime * result + (this.teamSeasonPlayerIdIn == null ? 0 : this.teamSeasonPlayerIdIn.hashCode());
+		result = prime * result + (this.teamSeasonPlayerIdOut == null ? 0 : this.teamSeasonPlayerIdOut.hashCode());
+		result = prime * result + (this.type == null ? 0 : this.type.hashCode());
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 31 * result + type.hashCode();
-		result = 31 * result + fixtureId.hashCode();
-		result = 31 * result + elapsed.hashCode();
-		result = 31 * result + teamSeasonId.hashCode();
-		result = 31 * result + teamName.hashCode();
-		result = 31 * result + (teamSeasonPlayerIdIn != null ? teamSeasonPlayerIdIn.hashCode() : 0);
-		result = 31 * result + (teamSeasonPlayerIdOut != null ? teamSeasonPlayerIdOut.hashCode() : 0);
-		return result;
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Event other = (Event) obj;
+		if (this.elapsed == null) {
+			if (other.elapsed != null) {
+				return false;
+			}
+		} else if (!this.elapsed.equals(other.elapsed)) {
+			return false;
+		}
+		if (this.fixtureId == null) {
+			if (other.fixtureId != null) {
+				return false;
+			}
+		} else if (!this.fixtureId.equals(other.fixtureId)) {
+			return false;
+		}
+		if (this.teamName == null) {
+			if (other.teamName != null) {
+				return false;
+			}
+		} else if (!this.teamName.equals(other.teamName)) {
+			return false;
+		}
+		if (this.teamSeasonId == null) {
+			if (other.teamSeasonId != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonId.equals(other.teamSeasonId)) {
+			return false;
+		}
+		if (this.teamSeasonPlayerIdIn == null) {
+			if (other.teamSeasonPlayerIdIn != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonPlayerIdIn.equals(other.teamSeasonPlayerIdIn)) {
+			return false;
+		}
+		if (this.teamSeasonPlayerIdOut == null) {
+			if (other.teamSeasonPlayerIdOut != null) {
+				return false;
+			}
+		} else if (!this.teamSeasonPlayerIdOut.equals(other.teamSeasonPlayerIdOut)) {
+			return false;
+		}
+		if (this.type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!this.type.equals(other.type)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
