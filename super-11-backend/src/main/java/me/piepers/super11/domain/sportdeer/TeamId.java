@@ -1,27 +1,35 @@
 package me.piepers.super11.domain.sportdeer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
-import me.piepers.super11.domain.JsonDomainObject;
 
+/**
+ * The id as a reference to the {@link Team} object.
+ *
+ * @author Bas Piepers (bas@piepers.me)
+ *
+ */
 @DataObject
-public abstract class SportdeerDomainObject implements JsonDomainObject {
-
-	@JsonProperty("_id")
+public class TeamId {
+	@JsonProperty("id_team")
 	private final Long id;
 
-	public SportdeerDomainObject(@JsonProperty("_id") Long id) {
+	public TeamId(JsonObject jsonObject) {
+		this.id = jsonObject.getLong("id_team");
+	}
+
+	@JsonCreator
+	public static TeamId of(@JsonProperty("id_team") Long id) {
+		return new TeamId(id);
+	}
+
+	private TeamId(Long id) {
 		this.id = id;
 	}
 
-	public SportdeerDomainObject(JsonObject jsonObject) {
-		this.id = jsonObject.getLong("_id");
-	}
-
-	@JsonIgnore
 	public Long getId() {
 		return this.id;
 	}
@@ -45,7 +53,7 @@ public abstract class SportdeerDomainObject implements JsonDomainObject {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		SportdeerDomainObject other = (SportdeerDomainObject) obj;
+		TeamId other = (TeamId) obj;
 		if (this.id == null) {
 			if (other.id != null) {
 				return false;
@@ -54,6 +62,11 @@ public abstract class SportdeerDomainObject implements JsonDomainObject {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "TeamId [id=" + this.id + "]";
 	}
 
 }
