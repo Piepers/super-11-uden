@@ -1,14 +1,17 @@
 package me.piepers.super11.domain.sportdeer;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import io.vertx.core.json.JsonObject;
 
 @RunWith(JUnit4.class)
 public class StatTest {
@@ -22,14 +25,23 @@ public class StatTest {
 	}
 
 	@Test
-	// public void test_that_example_json_object_is_mapped_as_expected() {
-	// JsonObject jsonObject = new
-	// JsonObject(Json.encode(this.generateDefaultExampleResponse()));
-	// sysou
-	// // Stat stat = new Stat(jsonObject);
-	// // assertNotNull(stat);
-	//
-	// }
+	public void test_that_example_json_object_is_mapped_as_expected() {
+		JsonObject jsonObject = new JsonObject(this.generateStatJson());
+		Stat stat = new Stat(jsonObject);
+		assertNotNull(stat);
+		assertNotNull(stat.getStatType());
+		StatType statType = stat.getStatType();
+		assertThat(statType.getSubType(), is(equalTo("pull")));
+		assertThat(statType.getType(), is(equalTo("foulcommit")));
+		assertThat(statType.getTeamSeasonId(), is(833L));
+		assertThat(stat.getCounter(), is(1));
+	}
+
+	private String generateStatJson() {
+		return "{\r\n" + "            \"_id\": {\r\n" + "                \"type\": \"foulcommit\",\r\n"
+				+ "                \"subtype\": \"pull\",\r\n" + "                \"id_team_season\": 833\r\n"
+				+ "            },\r\n" + "            \"counter\": 1\r\n" + "        },\r\n" + "        {";
+	}
 
 	private String generateDefaultExampleResponse() {
 		return "{\r\n" + "    \"docs\": [\r\n" + "        {\r\n" + "            \"_id\": {\r\n"
