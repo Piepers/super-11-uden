@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import me.piepers.super11.domain.JsonDomainObject;
+
 /**
  * A Sportdeer API object mapper. Specific for the Sportdeer API that always has
  * a "docs" element with a list of attributes that are bound to a specific type
@@ -51,7 +53,7 @@ public final class SportdeerMapper {
 	 * @return the JSON payload
 	 * @throws JsonProcessingException
 	 */
-	public static <T> String to(Docs<T> docs) throws JsonProcessingException {
+	public static <T extends JsonDomainObject> String to(Docs<T> docs) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(docs);
 	}
 }

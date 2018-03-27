@@ -12,7 +12,10 @@ import me.piepers.super11.domain.JsonDomainObject;
  * information which type of events have occurred during games.
  *
  * It has a different formatting than the typical domain objects hence doesn't
- * extend {@link SportdeerDomainObject}
+ * extend {@link SportdeerDomainObject}.
+ *
+ * Note: the calling class therefore must also map this slightly differently and
+ * can not make use of the generic way the rest of the classes are mapped.
  *
  * @author Bas Pieeprs (bas@piepers.me)
  *

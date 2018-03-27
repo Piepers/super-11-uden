@@ -1,5 +1,7 @@
 package me.piepers.super11.domain.sportdeer;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,15 +26,19 @@ public class Season extends SportdeerDomainObject {
 	private final Long countryId;
 	@JsonProperty("id_league")
 	private final Long leagueId;
+	@JsonProperty("is_last_season")
+	private final boolean lastSeason;
 
 	@JsonCreator
 	public Season(@JsonProperty("_id") Long id, @JsonProperty("years") String years, @JsonProperty("name") String name,
-			@JsonProperty("id_country") Long countryId, @JsonProperty("id_league") Long leagueId) {
+			@JsonProperty("id_country") Long countryId, @JsonProperty("id_league") Long leagueId,
+			@JsonProperty("is_last_season") boolean lastSeason) {
 		super(id);
 		this.years = years;
 		this.name = name;
 		this.countryId = countryId;
 		this.leagueId = leagueId;
+		this.lastSeason = lastSeason;
 	}
 
 	public Season(JsonObject jsonObject) {
@@ -40,7 +46,10 @@ public class Season extends SportdeerDomainObject {
 		this.years = jsonObject.getString("years");
 		this.name = jsonObject.getString("name");
 		this.countryId = jsonObject.getLong("id_country");
-		this.leagueId = jsonObject.getLong("leagueId");
+		this.leagueId = jsonObject.getLong("id_league");
+		this.lastSeason = Objects.nonNull(jsonObject.getBoolean("is_last_season"))
+				? jsonObject.getBoolean("is_last_season")
+				: false;
 	}
 
 	public String getYears() {
@@ -59,11 +68,16 @@ public class Season extends SportdeerDomainObject {
 		return this.name;
 	}
 
+	public boolean isLastSeason() {
+		return this.lastSeason;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + (this.countryId == null ? 0 : this.countryId.hashCode());
+		result = prime * result + (this.lastSeason ? 1231 : 1237);
 		result = prime * result + (this.leagueId == null ? 0 : this.leagueId.hashCode());
 		result = prime * result + (this.name == null ? 0 : this.name.hashCode());
 		result = prime * result + (this.years == null ? 0 : this.years.hashCode());
@@ -87,6 +101,9 @@ public class Season extends SportdeerDomainObject {
 				return false;
 			}
 		} else if (!this.countryId.equals(other.countryId)) {
+			return false;
+		}
+		if (this.lastSeason != other.lastSeason) {
 			return false;
 		}
 		if (this.leagueId == null) {
@@ -115,7 +132,8 @@ public class Season extends SportdeerDomainObject {
 
 	@Override
 	public String toString() {
-		return "Season [id=" + this.getId() + ", years=" + this.years + ", name=" + this.name + ", countryId="
-				+ this.countryId + ", leagueId=" + this.leagueId + "]";
+		return "Season [id=" + this.getId() + ", name=" + this.name + ", years=" + this.years + ", countryId="
+				+ this.countryId + ", leagueId=" + this.leagueId + ", lastSeason=" + this.lastSeason + "]";
 	}
+
 }

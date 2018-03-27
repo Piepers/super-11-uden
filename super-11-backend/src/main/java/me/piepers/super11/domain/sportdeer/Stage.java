@@ -41,7 +41,7 @@ public class Stage extends SportdeerDomainObject {
 		this.countryId = CountryId.of(jsonObject.getLong("id_country"));
 		this.leagueId = LeagueId.of(jsonObject.getLong("id_league"));
 		this.seasonId = SeasonId.of(jsonObject.getLong("id_season"));
-		this.sortStrategy = new ArrayList(jsonObject.getJsonArray("sort_strategy").getList());
+		this.sortStrategy = new ArrayList<Integer>(jsonObject.getJsonArray("sort_strategy").getList());
 		this.standing = jsonObject.getJsonArray("standing").stream().map(obj -> new StandingItem((JsonObject) obj))
 				.collect(Collectors.toList());
 
