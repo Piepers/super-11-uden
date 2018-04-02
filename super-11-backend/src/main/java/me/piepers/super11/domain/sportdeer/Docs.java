@@ -21,8 +21,6 @@ import me.piepers.super11.domain.JsonDomainObject;
  * @author Bas Piepers (bas@piepers.me)
  *
  */
-// TODO: is this class needed as we have the calling classes to map all the
-// relevant domain objects anyway?
 @JsonInclude(Include.NON_NULL)
 public class Docs<T> implements JsonDomainObject {
 
@@ -41,30 +39,26 @@ public class Docs<T> implements JsonDomainObject {
 
 	public Docs(JsonObject jsonObject, Class<T> typeParameterClass) throws Exception {
 		this.pagination = new Pagination(jsonObject.getJsonObject("pagination"));
-		this.data = jsonObject.getJsonArray("docs").stream().map(object -> (JsonObject) object).map(jo -> {
-			Constructor<T> constructor;
-			try {
-				constructor = typeParameterClass.getConstructor(JsonObject.class);
-				return constructor.newInstance(jsonObject);
-			} catch (Exception e) {
-				// FIXME: make more concise.
-				e.printStackTrace();
-				return null;
-			}
-		}).collect(Collectors.toList());
+		this.data = jsonObject.getJsonArray("docs")
+				.stream()
+				.map(object -> (JsonObject) object)
+				.map(jo -> {
+					Constructor<T> constructor;
+					try {
+						constructor = typeParameterClass.getConstructor(JsonObject.class);
+						return constructor.newInstance(jo);
+					} catch (Exception e) {
+						// FIXME: make more concise.
+						e.printStackTrace();
+						return null;
+					}
+				})
+				.collect(Collectors.toList());
 	}
 
 	public List<T> getData() {
 		return this.data;
 	}
-
-	// public void addDataElement(T element) {
-	// if (Objects.isNull(this.data)) {
-	// this.data = new ArrayList<>();
-	// }
-	//
-	// this.data.add(element);
-	// }
 
 	public Pagination getPagination() {
 		return this.pagination;

@@ -27,7 +27,11 @@ public class Pagination {
 	public Pagination(JsonObject jsonObject) {
 		this.total = jsonObject.getInteger("total");
 		this.limit = jsonObject.getInteger("limit");
-		this.page = jsonObject.getInteger("page");
+		// If the client passes a "page" parameter to the url, it is returned as a
+		// String, otherwise it is returned as an integer.
+		this.page = Integer.valueOf(jsonObject.getValue("page")
+				.toString());
+		// this.page = jsonObject.getInteger("page");
 		this.pages = jsonObject.getInteger("pages");
 	}
 
