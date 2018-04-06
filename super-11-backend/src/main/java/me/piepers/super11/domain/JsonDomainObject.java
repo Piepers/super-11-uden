@@ -4,8 +4,8 @@ import io.vertx.core.json.JsonObject;
 
 public interface JsonDomainObject {
 
-	default JsonObject toJson() {
-		return JsonObject.mapFrom(this);
-	}
+    default JsonObject toJson() {
+        return JsonObject.mapFrom(this);
+    }
 
 }

@@ -20,42 +20,41 @@ import me.piepers.super11.application.Super11CommandHandlerVerticle;
  * the application. See pom.xml file.
  *
  * @author Bas Piepers (bas@piepers.me)
- *
  */
 public class Super11Application extends AbstractVerticle {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Super11Application.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Super11Application.class);
 
-	@Override
-	public void start(Future<Void> startFuture) throws Exception {
-		// Register event bus services (services that send and respond to messages)
+    @Override
+    public void start(Future<Void> startFuture) throws Exception {
+        // Register event bus services (services that send and respond to messages)
 
-		// The configuration of the application
-		final ConfigStoreOptions store = new ConfigStoreOptions().setType("file")
-				.setConfig(new JsonObject().put("path", "super-11-conf.json"));
-		final ConfigRetrieverOptions options = new ConfigRetrieverOptions().addStore(store);
+        // The configuration of the application
+        final ConfigStoreOptions store = new ConfigStoreOptions().setType("file")
+                .setConfig(new JsonObject().put("path", "super-11-conf.json"));
+        final ConfigRetrieverOptions options = new ConfigRetrieverOptions().addStore(store);
 
-		final ConfigRetriever configRetriever = ConfigRetriever.create(this.vertx, options);
+        final ConfigRetriever configRetriever = ConfigRetriever.create(this.vertx, options);
 
-		// Deploy verticles
-		configRetriever.rxGetConfig().flatMapCompletable(configuration ->
+        // Deploy verticles
+        configRetriever.rxGetConfig().flatMapCompletable(configuration ->
 
-		Completable.fromAction(() -> LOGGER.info("Deploying super 11 backend"))
-				.andThen(this.vertx.rxDeployVerticle(Super11CommandHandlerVerticle.class.getName(),
-						new DeploymentOptions().setConfig(configuration)))
-				.toCompletable()
-				.andThen(this.vertx.rxDeployVerticle(HttpServerVerticle.class.getName(),
-						new DeploymentOptions().setConfig(configuration)))
-				.toCompletable().andThen(this.vertx.rxDeployVerticle(FeedVerticle.class.getName(),
-						new DeploymentOptions().setConfig(configuration)))
-				.toCompletable()
+                Completable.fromAction(() -> LOGGER.info("Deploying super 11 backend"))
+                        .andThen(this.vertx.rxDeployVerticle(Super11CommandHandlerVerticle.class.getName(),
+                                new DeploymentOptions().setConfig(configuration)))
+                        .toCompletable()
+                        .andThen(this.vertx.rxDeployVerticle(HttpServerVerticle.class.getName(),
+                                new DeploymentOptions().setConfig(configuration)))
+                        .toCompletable().andThen(this.vertx.rxDeployVerticle(FeedVerticle.class.getName(),
+                        new DeploymentOptions().setConfig(configuration)))
+                        .toCompletable()
 
-		).subscribe(() -> {
-			LOGGER.info("Super 11 application has been deployed successfully.");
-			startFuture.complete();
-		}, throwable -> {
-			LOGGER.error("Super 11 has not been deployed due to: ", throwable);
-			startFuture.fail(throwable);
-		});
-	}
+        ).subscribe(() -> {
+            LOGGER.info("Super 11 application has been deployed successfully.");
+            startFuture.complete();
+        }, throwable -> {
+            LOGGER.error("Super 11 has not been deployed due to: ", throwable);
+            startFuture.fail(throwable);
+        });
+    }
 }
