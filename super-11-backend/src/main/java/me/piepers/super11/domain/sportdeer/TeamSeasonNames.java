@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * Represents the team names (home and away) in various domain objects.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

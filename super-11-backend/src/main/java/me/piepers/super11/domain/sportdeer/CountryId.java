@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * Represents the country id in cases where it is referred to from another
  * domain object.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

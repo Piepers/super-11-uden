@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonObject;
  * similar to the {@link StandingItem} object which has an _id field but of a
  * different type (String rather than a Long).
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

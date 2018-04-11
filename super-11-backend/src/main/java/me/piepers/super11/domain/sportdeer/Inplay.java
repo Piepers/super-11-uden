@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonObject;
  * Represents all the live matches that are currently active (may return an
  * empty result).
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 @DataObject
 @JsonDeserialize(builder = Inplay.Builder.class)

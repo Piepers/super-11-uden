@@ -15,7 +15,7 @@ import me.piepers.super11.domain.JsonDomainObject;
  * a "docs" element with a list of attributes that are bound to a specific type
  * by this mapper.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 

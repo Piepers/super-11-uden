@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * Convenience id class in domain objects where home and away team ids are used.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

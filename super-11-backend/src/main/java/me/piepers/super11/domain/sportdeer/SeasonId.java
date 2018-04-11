@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * Season id for when it is referred to by other domain objects.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * The team/season data for a particular season. The corresponding API request
  * typically contains each team for a season.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

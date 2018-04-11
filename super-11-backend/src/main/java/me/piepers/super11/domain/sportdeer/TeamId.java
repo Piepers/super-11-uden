@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * The id as a reference to the {@link Team} object.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

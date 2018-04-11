@@ -13,7 +13,7 @@ import me.piepers.super11.domain.JsonDomainObject;
  * The Sportdeer API Event object. Note that this doesn't extend {@link SportdeerDomainObject} since the id field is
  * slightly different.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

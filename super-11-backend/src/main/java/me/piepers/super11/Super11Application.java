@@ -19,7 +19,7 @@ import me.piepers.super11.application.Super11CommandHandlerVerticle;
  * The main entry point for the application. Used as the configuration class of
  * the application. See pom.xml file.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 public class Super11Application extends AbstractVerticle {
 

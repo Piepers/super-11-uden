@@ -11,7 +11,7 @@ import io.vertx.core.json.JsonObject;
  * "_id" field (which is different in type from the
  * {@link SportdeerDomainObject}'s id field.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

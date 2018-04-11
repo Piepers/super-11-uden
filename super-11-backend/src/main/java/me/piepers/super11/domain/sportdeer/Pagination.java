@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * Represents the part of the json document that has information about
  * pagination. May not be present.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

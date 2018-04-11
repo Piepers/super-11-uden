@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
  * The Sportdeer representation of a Player containing which team season it
  * currently is playing for.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

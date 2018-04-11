@@ -10,7 +10,7 @@ import me.piepers.super11.domain.JsonDomainObject;
  * The type of statistic, holds the type, subtype (optional) and the team season
  * id.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

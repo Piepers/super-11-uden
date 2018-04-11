@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * Represents the amount of goals for the home and away team in various domain
  * objects.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

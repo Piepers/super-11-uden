@@ -8,7 +8,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * The id of a player for a particular season in cases where it is referred to from other objects.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 @DataObject
 public class TeamSeasonPlayerId {

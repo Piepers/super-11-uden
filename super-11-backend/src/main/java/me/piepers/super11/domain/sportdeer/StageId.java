@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * The stage id in cases where it is referred to from other domain object.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

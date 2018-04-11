@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * Convenient class that contains start- and end-times for the first and second
  * half. Used in various other domain objects.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

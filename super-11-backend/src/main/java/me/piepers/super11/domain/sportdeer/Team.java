@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * The domain object of the SportDeer Team object.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

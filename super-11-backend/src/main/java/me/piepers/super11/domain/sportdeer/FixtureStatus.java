@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * Representation of the fixture status object that contains a name and a short
  * version of the name.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

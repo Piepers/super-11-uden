@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * The referee object containing the unwrapped id and the name.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
  * Represents the league id in cases where it is referred to from another
  * object.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * Represents the Sportdeer API's "Upcoming" object.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

@@ -18,7 +18,7 @@ import me.piepers.super11.domain.JsonDomainObject;
  * contains a list of data that is of a particular type and optionally
  * Pagination information.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @JsonInclude(Include.NON_NULL)

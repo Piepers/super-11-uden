@@ -9,7 +9,7 @@ import io.vertx.core.json.JsonObject;
  * The Sportdeer API line-up domain object which contains lineups for specific
  * fixtures.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 @DataObject
 public class LineUp extends SportdeerDomainObject {

@@ -16,7 +16,7 @@ import io.vertx.core.json.JsonObject;
  * information, amount of wins, losses, draws etc.). It contains another object
  * "Standing", which represents all the teams and their position in the league.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

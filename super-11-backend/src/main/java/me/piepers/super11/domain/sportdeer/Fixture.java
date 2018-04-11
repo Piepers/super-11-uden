@@ -14,7 +14,7 @@ import io.vertx.core.json.JsonObject;
  * match was scheduled and when it started and ended as well as references to
  * other data like teams etc.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

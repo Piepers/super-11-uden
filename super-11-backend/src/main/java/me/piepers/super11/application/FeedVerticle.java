@@ -5,7 +5,7 @@ import io.vertx.core.AbstractVerticle;
 /**
  * Verticle for calling external resources and feeds from sport sites.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 public class FeedVerticle extends AbstractVerticle {
 

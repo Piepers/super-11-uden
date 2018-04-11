@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonObject;
  * The Seaon object from the Sportdeer API contains the name, years, country and
  * league of the season.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  *
  */
 @DataObject

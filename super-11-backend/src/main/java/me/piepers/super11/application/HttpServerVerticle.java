@@ -11,7 +11,7 @@ import io.vertx.ext.web.Router;
 /**
  * Verticle that handles incoming calls from the UI.
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 public class HttpServerVerticle extends AbstractVerticle {
 

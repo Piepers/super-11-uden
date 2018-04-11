@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * A type of event that describes a goal
  *
- * @author Bas Piepers (bas@piepers.me)
+ * @author Bas Piepers
  */
 @DataObject
 public class Goal {
