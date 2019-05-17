@@ -1,3 +1,6 @@
+# Configuration that is not supposed to be exposed to the outside world.
+sportdeer-api-conf.json
+
 #
 # Project specific excludes
 #

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 @Ignore
 @RunWith(VertxUnitRunner.class)
 public class SportDeerApiTest {

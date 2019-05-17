@@ -8,7 +8,7 @@
 	<name>super-11-backend</name>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>10</java.version>
 		<vertx.version>3.5.1</vertx.version>
 		<configuration.class>${project.groupId}.Super11Application</configuration.class>
 

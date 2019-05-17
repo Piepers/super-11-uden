@@ -29,12 +29,18 @@ public class Super11Application extends AbstractVerticle {
     public void start(Future<Void> startFuture) throws Exception {
         // Register event bus services (services that send and respond to messages)
 
-        // The configuration of the application
+        // The main configuration of the application
         final ConfigStoreOptions store = new ConfigStoreOptions().setType("file")
                 .setConfig(new JsonObject().put("path", "super-11-conf.json"));
         final ConfigRetrieverOptions options = new ConfigRetrieverOptions().addStore(store);
 
+        // The configuration of the SportDeer feed which basically only contains the refresh token (not in Git)
+        final ConfigStoreOptions apiStore = new ConfigStoreOptions().setType("file")
+                .setConfig(new JsonObject().put("path", "sportdeer-api-conf.json"));
+        options.addStore(apiStore);
+
         final ConfigRetriever configRetriever = ConfigRetriever.create(this.vertx, options);
+
 
         // Deploy verticles
         configRetriever.rxGetConfig().flatMapCompletable(configuration ->
